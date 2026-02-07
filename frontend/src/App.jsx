@@ -3,10 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Simulation from './pages/Simulation'; 
-import GraphView from './pages/GraphView'; // <--- The 3D Component
+import GraphView from './pages/GraphView'; 
+import Intel from './pages/Intel'; 
 
-// Placeholder for Intel
-const Intel = () => <div className="p-8 text-white">Global Intel Loading...</div>;
 
 function App() {
   return (
