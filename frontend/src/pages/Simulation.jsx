@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Activity, AlertTriangle, TrendingUp, TrendingDown } from 'lucide-react';
+import { Play, Activity, TrendingUp, TrendingDown, BrainCircuit } from 'lucide-react'; // <--- Ensure BrainCircuit is imported
 
 const MACRO_FACTORS = [
   { id: 'CRUDE_OIL', name: 'Brent Crude Oil' },
@@ -11,12 +11,13 @@ const MACRO_FACTORS = [
 
 const Simulation = () => {
   const [selectedMacro, setSelectedMacro] = useState(MACRO_FACTORS[0].id);
-  const [magnitude, setMagnitude] = useState(0.10); // Default 10%
+  const [magnitude, setMagnitude] = useState(0.10);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(null);
 
   const runSimulation = async () => {
     setLoading(true);
+    setResults(null); // Clear previous results while thinking
     try {
       const response = await fetch('http://localhost:8000/api/sim/run', {
         method: 'POST',
@@ -50,17 +51,16 @@ const Simulation = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* --- CONTROL DECK (Left Panel) --- */}
+        {/* --- CONTROL DECK (Left) --- */}
         <div className="bg-midnight-900 border border-midnight-700 rounded-lg p-6 h-fit">
           <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-6">Scenario Configuration</h3>
           
-          {/* Factor Selection */}
           <div className="mb-6">
             <label className="block text-sm text-gray-400 mb-2">Trigger Event</label>
             <select 
               value={selectedMacro}
               onChange={(e) => setSelectedMacro(e.target.value)}
-              className="w-full bg-midnight-950 border border-midnight-700 text-white p-3 rounded focus:border-accent-blue focus:outline-none transition-colors"
+              className="w-full bg-midnight-950 border border-midnight-700 text-white p-3 rounded focus:border-accent-blue focus:outline-none"
             >
               {MACRO_FACTORS.map(f => (
                 <option key={f.id} value={f.id}>{f.name}</option>
@@ -68,7 +68,6 @@ const Simulation = () => {
             </select>
           </div>
 
-          {/* Magnitude Slider */}
           <div className="mb-8">
             <div className="flex justify-between mb-2">
               <label className="text-sm text-gray-400">Shock Magnitude</label>
@@ -83,14 +82,8 @@ const Simulation = () => {
               onChange={(e) => setMagnitude(e.target.value)}
               className="w-full h-2 bg-midnight-700 rounded-lg appearance-none cursor-pointer accent-accent-blue"
             />
-            <div className="flex justify-between text-[10px] text-gray-600 mt-1 font-mono">
-              <span>-50%</span>
-              <span>0%</span>
-              <span>+50%</span>
-            </div>
           </div>
 
-          {/* Launch Button */}
           <button 
             onClick={runSimulation}
             disabled={loading}
@@ -100,25 +93,50 @@ const Simulation = () => {
                 : 'bg-accent-blue hover:bg-blue-600 text-white shadow-glow'
             }`}
           >
-            {loading ? 'CALCULATING...' : <><Play size={18} fill="currentColor" /> RUN SCENARIO</>}
+            {loading ? 'ANALYZING...' : <><Play size={18} fill="currentColor" /> RUN SCENARIO</>}
           </button>
         </div>
 
-        {/* --- RESULTS FEED (Right Panel) --- */}
+        {/* --- RESULTS FEED (Right) --- */}
         <div className="lg:col-span-2">
           {!results ? (
             <div className="h-full flex flex-col items-center justify-center text-gray-600 border border-dashed border-midnight-700 rounded-lg min-h-[400px]">
-              <Activity size={48} className="mb-4 opacity-20" />
-              <p>Ready to simulate.</p>
-              <p className="text-sm">Select a trigger to analyze propagation.</p>
+              {loading ? (
+                <div className="text-center animate-pulse">
+                  <BrainCircuit size={48} className="mb-4 text-accent-gold mx-auto" />
+                  <p className="text-accent-gold">Consulting Oracle AI...</p>
+                </div>
+              ) : (
+                <>
+                  <Activity size={48} className="mb-4 opacity-20" />
+                  <p>Ready to simulate.</p>
+                </>
+              )}
             </div>
           ) : (
             <div className="space-y-4">
-              {/* Summary Card */}
+              
+              {/* --- 🌟 THE GOLD AI CARD (THIS WAS MISSING) --- */}
+              {results.ai_analysis && (
+                <div className="bg-gradient-to-r from-midnight-900 to-midnight-800 border-l-4 border-accent-gold p-5 rounded-r-lg mb-6 relative overflow-hidden shadow-card">
+                  <div className="absolute top-0 right-0 p-4 opacity-10">
+                    <BrainCircuit size={64} />
+                  </div>
+                  <h3 className="text-accent-gold text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <BrainCircuit size={16} /> Chief Economist Insight
+                  </h3>
+                  <p className="text-gray-200 font-serif leading-relaxed italic border-l-2 border-midnight-700 pl-4">
+                    "{results.ai_analysis}"
+                  </p>
+                </div>
+              )}
+              {/* ----------------------------------------------- */}
+
+              {/* Impact Stats */}
               <div className="bg-midnight-900 border border-midnight-700 p-4 rounded-lg flex items-center justify-between">
                 <div>
                   <h3 className="text-white font-bold">{results.source} Shock</h3>
-                  <p className="text-sm text-gray-400">Initial Intensity: {(results.initial_shock * 100).toFixed(0)}%</p>
+                  <p className="text-sm text-gray-400">Intensity: {(results.initial_shock * 100).toFixed(0)}%</p>
                 </div>
                 <div className="text-right">
                   <span className="text-2xl font-mono text-white block">{results.affected_count}</span>
@@ -129,7 +147,7 @@ const Simulation = () => {
               {/* Impact List */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {results.impacts.map((node, i) => (
-                  <div key={i} className="bg-midnight-900/50 border border-midnight-700 p-3 rounded flex justify-between items-center hover:bg-midnight-800 transition-colors">
+                  <div key={i} className="bg-midnight-900/50 border border-midnight-700 p-3 rounded flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <div className={`w-1 h-8 rounded-full ${node.impact < 0 ? 'bg-accent-rose' : 'bg-accent-teal'}`} />
                       <div>
@@ -147,7 +165,6 @@ const Simulation = () => {
             </div>
           )}
         </div>
-
       </div>
     </div>
   );

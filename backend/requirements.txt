@@ -13,3 +13,4 @@ llama-index-llms-openai
 yfinance 
 networkx 
 scikit-learn
+groq
