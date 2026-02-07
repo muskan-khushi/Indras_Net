@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
+import Simulation from './pages/Simulation'; 
 
 // Placeholder Pages (To prevent crashes)
 const GraphView = () => <div className="ml-[260px] p-8 text-white">Network Analysis Loading...</div>;
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/graph" element={<GraphView />} />
+            <Route path="/oracle" element={<Simulation />} /> 
             <Route path="/oracle" element={<Oracle />} />
             <Route path="/intel" element={<Intel />} />
           </Routes>
