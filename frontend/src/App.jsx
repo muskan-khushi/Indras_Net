@@ -3,23 +3,34 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Simulation from './pages/Simulation'; 
+import GraphView from './pages/GraphView'; // <--- The 3D Component
 
-// Placeholder Pages (To prevent crashes)
-const GraphView = () => <div className="ml-[260px] p-8 text-white">Network Analysis Loading...</div>;
-const Oracle = () => <div className="ml-[260px] p-8 text-white">Oracle Engine Loading...</div>;
-const Intel = () => <div className="ml-[260px] p-8 text-white">Global Intel Loading...</div>;
+// Placeholder for Intel
+const Intel = () => <div className="p-8 text-white">Global Intel Loading...</div>;
 
 function App() {
   return (
     <Router>
-      <div className="flex min-h-screen bg-midnight-950 text-white">
+      {/* 1. WRAPPER: Fixed to screen height (h-screen) & hides window scrollbar */}
+      <div className="flex h-screen bg-midnight-950 text-white overflow-hidden">
+        
         <Sidebar />
-        <main className="flex-1 relative">
+        
+        {/* 2. MAIN CONTENT: 
+            - ml-[260px]: Pushes content right to respect the Fixed Sidebar
+            - h-full: Takes full height of screen
+            - overflow-y-auto: SCROLLS only this area 
+        */}
+        <main className="flex-1 ml-[260px] h-full overflow-y-auto relative">
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/graph" element={<GraphView />} />
-            <Route path="/oracle" element={<Simulation />} /> 
-            <Route path="/oracle" element={<Oracle />} />
+            
+            {/* 👇 THIS loads the real 3D Graph now */}
+            <Route path="/graph" element={<GraphView />} /> 
+            
+            {/* 👇 Fixed: Only ONE route for Oracle/Simulation */}
+            <Route path="/oracle" element={<Simulation />} />
+            
             <Route path="/intel" element={<Intel />} />
           </Routes>
         </main>

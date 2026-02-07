@@ -36,7 +36,7 @@ def generate_economic_briefing(simulation_results: dict):
             
             chat_completion = client.chat.completions.create(
                 messages=[{"role": "user", "content": prompt}],
-                model="llama3-8b-8192",
+                model="llama-3.3-70b-versatile",  
                 temperature=0.5,
                 max_tokens=100,
             )
