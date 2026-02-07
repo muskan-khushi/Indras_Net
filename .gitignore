@@ -1,0 +1,85 @@
+# =========================
+# 🔐 ENV FILES
+# =========================
+.env
+.env.*
+*.env
+*.local
+
+# =========================
+# 🐍 PYTHON
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# mypy
+.mypy_cache/
+
+# =========================
+# ⚛️ NODE / REACT
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Vite
+dist/
+.vite/
+
+# =========================
+# 🧠 IDEs / Editors
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# 🖥️ OS FILES
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# 📦 Logs
+# =========================
+*.log
+
+# =========================
+# 🐳 Docker
+# =========================
+docker-compose.override.yml
+
+# =========================
+# 🔒 Secrets / Keys
+# =========================
+*.pem
+*.key
+*.crt
+
+# =========================
+# 🚀 Production builds
+# =========================
+frontend/dist/
+backend/dist/
